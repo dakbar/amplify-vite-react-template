@@ -29,12 +29,8 @@ function App() {
   }
 
   function deleteTodo(id: string) {
-    client.models.Todo.delete({ id })
-      .then(() => {
-        // The subscription will automatically update the state
-      })
-      .catch((error) => console.error("Failed to delete todo:", error));
-  }
+    client.models.Todo.delete({ id });
+      }
 
   return (
     <main>
@@ -59,6 +55,5 @@ function App() {
       </div>
     </main>
   );
-}
 
 export default App;
