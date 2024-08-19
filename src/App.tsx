@@ -8,29 +8,20 @@ function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
 
   useEffect(() => {
-    // Subscribing to real-time updates of the Todo list
-    const subscription = client.models.Todo.observeQuery().subscribe({
+    client.models.Todo.observeQuery().subscribe({
       next: (data) => setTodos([...data.items]),
     });
-
-    // Clean up the subscription on component unmount
-    return () => subscription.unsubscribe();
   }, []);
 
   function createTodo() {
-    const content = window.prompt("Todo content");
-    if (content) {
-      client.models.Todo.create({ content })
-        .then(() => {
-          // The subscription will automatically update the state
-        })
-        .catch((error) => console.error("Failed to create todo:", error));
-    }
+    client.models.Todo.create({ content: window.prompt("Todo content") });
   }
-
+  
   function deleteTodo(id: string) {
     client.models.Todo.delete({ id });
-      }
+  }
+
+
 
   return (
     <main>
@@ -38,12 +29,9 @@ function App() {
       <button onClick={createTodo}>+ new</button>
       <ul>
         {todos.map((todo) => (
-          <li
-            onClick={() => deleteTodo(todo.id)}
-            key={todo.id}
-          >
-            {todo.content}
-          </li>
+          <li 
+          onClick={() => deleteTodo(todo.id)}
+key={todo.id}>{todo.content}</li>
         ))}
       </ul>
       <div>
@@ -56,4 +44,5 @@ function App() {
     </main>
   );
 }
+
 export default App;
